@@ -83,7 +83,7 @@ export default class App extends Component {
       secondClock,
       secondText,
       controller,
-      controllerText
+      controllerText,
     } = styles;
     return (
       <View style={container}>
@@ -107,7 +107,7 @@ export default class App extends Component {
         </TouchableWithoutFeedback>
 
         <View style={controller}>
-          <Text style={controllerText}>30:44</Text>
+          <Text style={controllerText}>DURDUR</Text>
         </View>
 
         <TouchableWithoutFeedback
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'red',
+    backgroundColor: 'black',
     color: 'white',
   },
   firstClock: {
@@ -151,8 +151,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 9,
-    backgroundColor: 'green',
-    width: '100%',
+    backgroundColor: 'black',
+    width: '72%',
     transform: [{ rotate: '90deg' }],
   },
   secondText: {
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 2,
-    backgroundColor: 'blue',
+    backgroundColor: 'red',
     width: '100%'
   },
   controllerText: {
