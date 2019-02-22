@@ -18,7 +18,8 @@ export default class App extends Component {
 
 
       extraTime: 5,
-      currentTurn: 1
+      currentTurn: 0,
+      isStopped: 0
     }
     this.firstTick = this.firstTick.bind(this);
     this.secondTick = this.secondTick.bind(this);
@@ -28,14 +29,14 @@ export default class App extends Component {
     var firstSec = this.state.firstSec;
     var firstMin = this.state.firstMin;
 
-
-    if (firstSec > 0) {
-      firstSec--
-    } else {
-      firstSec = 59;
-      firstMin--
+    if (this.state.isStopped == 0) {
+      if (firstSec > 0) {
+        firstSec--
+      } else {
+        firstSec = 59;
+        firstMin--
+      }
     }
-
 
     this.setState({
       firstMin,
@@ -47,15 +48,14 @@ export default class App extends Component {
     var secondSec = this.state.secondSec;
     var secondMin = this.state.secondMin;
 
-
-    if (secondSec > 0) {
-      secondSec--
-    } else {
-      secondSec = 59;
-      secondMin--
+    if (this.state.isStopped == 0) {
+      if (secondSec > 0) {
+        secondSec--
+      } else {
+        secondSec = 59;
+        secondMin--
+      }
     }
-
-
     this.setState({
       secondMin,
       secondSec
@@ -65,9 +65,9 @@ export default class App extends Component {
 
   componentDidMount = () => {
     setInterval(() => {
-      if (this.state.currentTurn == 1) {
+      if (this.state.currentTurn == 0) {
         this.firstTick();
-      } else if (this.state.currentTurn == 2) {
+      } else if (this.state.currentTurn == 1) {
         this.secondTick();
       }
     }, 1000);
@@ -79,45 +79,55 @@ export default class App extends Component {
     const {
       container,
       firstClock,
-      firstText,
+      nextTurnText,
       secondClock,
-      secondText,
+      currentTurnText,
       controller,
       controllerText,
+
     } = styles;
+
+    var stoppedMessage = "DEVAM ET";
+    var startedMessage = "DURDUR";
     return (
       <View style={container}>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            this.setState({
-              currentTurn: 2
-            })
-          }}>
-          <View
-            style={firstClock}>
-            <Text
-              onPress={() => {
-                this.setState({
-                  currentTurn: 2
-                })
-              }}
-              style={firstText}>{this.state.firstMin} : {this.state.firstSec} </Text>
-          </View>
-
-        </TouchableWithoutFeedback>
-
-        <View style={controller}>
-          <Text style={controllerText}>DURDUR</Text>
-        </View>
-
         <TouchableWithoutFeedback
           onPress={() => {
             this.setState({
               currentTurn: 1
             })
           }}>
+          <View
+            style={firstClock}>
+            <Text style={(this.state.currentTurn)?nextTurnText:currentTurnText}>{this.state.firstMin} : {this.state.firstSec} </Text>
+          </View>
+
+        </TouchableWithoutFeedback>
+
+        <View style={controller}>
+          <Text
+            style={controllerText}
+            onPress={() => {
+              if (this.state.isStopped == 1) {
+                this.setState({
+                  isStopped: 0
+                })
+              } else {
+                this.setState({
+                  isStopped: 1
+                })
+              }
+            }}>{this.state.isStopped ? stoppedMessage : startedMessage}</Text>
+        </View>
+
+        <TouchableWithoutFeedback
+          onPress={() => {
+            this.setState({
+              currentTurn: 0
+            })
+          }}>
           <View style={secondClock}>
-            <Text style={secondText}>{this.state.secondMin} : {this.state.secondSec}</Text>
+            <Text style={(this.state.currentTurn)?currentTurnText:nextTurnText}>{this.state.secondMin} : {this.state.secondSec}</Text>
           </View>
 
         </TouchableWithoutFeedback>
@@ -141,9 +151,9 @@ const styles = StyleSheet.create({
     flex: 9,
     backgroundColor: 'black',
     width: '100%',
-    transform: [{ rotate: '90deg' }]
+    transform: [{ rotate: '90deg' }],
   },
-  firstText: {
+  nextTurnText: {
     color: 'white',
     fontSize: 70,
   },
@@ -155,7 +165,7 @@ const styles = StyleSheet.create({
     width: '72%',
     transform: [{ rotate: '90deg' }],
   },
-  secondText: {
+  currentTurnText: {
     color: 'yellow',
     fontSize: 70
   },
@@ -169,6 +179,5 @@ const styles = StyleSheet.create({
   controllerText: {
     color: 'white',
     fontSize: 20,
-
   }
 });
