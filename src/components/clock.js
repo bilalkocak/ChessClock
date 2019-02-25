@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Alert, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Text, View, Alert, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
 
 export default class App extends Component {
 
@@ -78,31 +78,31 @@ export default class App extends Component {
   render() {
     const {
       container,
-      firstClock,
+      clock,
       nextTurnText,
-      secondClock,
       currentTurnText,
       controller,
       controllerText,
-
+      bgDeneme
     } = styles;
 
     var stoppedMessage = "DEVAM ET";
     var startedMessage = "DURDUR";
     return (
       <View style={container}>
-        <TouchableWithoutFeedback
+        <TouchableOpacity
+          style={bgDeneme}
           onPress={() => {
             this.setState({
               currentTurn: 1
             })
           }}>
           <View
-            style={firstClock}>
-            <Text style={(this.state.currentTurn)?nextTurnText:currentTurnText}>{this.state.firstMin} : {this.state.firstSec} </Text>
+            style={clock}>
+            <Text style={(this.state.currentTurn) ? nextTurnText : currentTurnText}>{this.state.firstMin} : {this.state.firstSec} </Text>
           </View>
 
-        </TouchableWithoutFeedback>
+        </TouchableOpacity >
 
         <View style={controller}>
           <Text
@@ -120,17 +120,18 @@ export default class App extends Component {
             }}>{this.state.isStopped ? stoppedMessage : startedMessage}</Text>
         </View>
 
-        <TouchableWithoutFeedback
+        <TouchableOpacity
+          style={bgDeneme}
           onPress={() => {
             this.setState({
               currentTurn: 0
             })
           }}>
-          <View style={secondClock}>
-            <Text style={(this.state.currentTurn)?currentTurnText:nextTurnText}>{this.state.secondMin} : {this.state.secondSec}</Text>
+          <View style={clock}>
+            <Text style={(this.state.currentTurn) ? currentTurnText : nextTurnText}>{this.state.secondMin} : {this.state.secondSec}</Text>
           </View>
 
-        </TouchableWithoutFeedback>
+        </TouchableOpacity >
 
       </View>
     );
@@ -145,39 +146,34 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     color: 'white',
   },
-  firstClock: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 9,
-    backgroundColor: 'black',
-    width: '100%',
-    transform: [{ rotate: '90deg' }],
-  },
-  nextTurnText: {
-    color: 'white',
-    fontSize: 70,
-  },
-  secondClock: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 9,
-    backgroundColor: 'black',
-    width: '72%',
+  clock: {
     transform: [{ rotate: '90deg' }],
   },
   currentTurnText: {
-    color: 'yellow',
+    color: '#a779ce',
     fontSize: 70
+  },
+
+  nextTurnText: {
+    color: 'white',
+    fontSize: 70,
   },
   controller: {
     justifyContent: 'center',
     alignItems: 'center',
     flex: 2,
-    backgroundColor: 'red',
+    backgroundColor: '#626262',
     width: '100%'
   },
   controllerText: {
     color: 'white',
     fontSize: 20,
+  },
+  bgDeneme: {
+    backgroundColor: '#323232',
+    flex: 9,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
   }
 });
