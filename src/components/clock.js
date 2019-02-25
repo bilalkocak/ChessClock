@@ -19,17 +19,41 @@ export default class App extends Component {
 
       extraTime: 5,
       currentTurn: 0,
-      isStopped: 0
+      isPaused: 0,
+      isStopped: 1
     }
     this.firstTick = this.firstTick.bind(this);
     this.secondTick = this.secondTick.bind(this);
+    this.firstPress = this.firstPress.bind(this);
+    this.secondPress = this.secondPress.bind(this);
   }
 
+
+  firstPress() {
+    if (this.state.isStopped == 1) {
+      this.setState({
+        isStopped: 0
+      })
+    }
+    this.setState({
+      currentTurn: 1
+    })
+  }
+  secondPress() {
+    if (this.state.isStopped == 1) {
+      this.setState({
+        isStopped: 0
+      })
+    }
+    this.setState({
+      currentTurn: 0
+    })
+  }
   firstTick() {
     var firstSec = this.state.firstSec;
     var firstMin = this.state.firstMin;
 
-    if (this.state.isStopped == 0) {
+    if (this.state.isPaused == 0 && this.state.isStopped == 0) {
       if (firstSec > 0) {
         firstSec--
       } else {
@@ -48,7 +72,7 @@ export default class App extends Component {
     var secondSec = this.state.secondSec;
     var secondMin = this.state.secondMin;
 
-    if (this.state.isStopped == 0) {
+    if (this.state.isPaused == 0 && this.state.isStopped == 0) {
       if (secondSec > 0) {
         secondSec--
       } else {
@@ -83,23 +107,31 @@ export default class App extends Component {
       currentTurnText,
       controller,
       controllerText,
-      bgDeneme
+      clockArea
     } = styles;
 
     var stoppedMessage = "DEVAM ET";
     var startedMessage = "DURDUR";
+    var firsClock = nextTurnText;
+    var secondClock = nextTurnText;
+    if (!this.state.isStopped) {
+      if (this.state.currentTurn == 1) {
+        secondClock = currentTurnText;
+        firsClock=nextTurnText;
+      }else{
+        firsClock=currentTurnText;
+        secondClock=nextTurnText
+      }
+
+    }
     return (
       <View style={container}>
         <TouchableOpacity
-          style={bgDeneme}
-          onPress={() => {
-            this.setState({
-              currentTurn: 1
-            })
-          }}>
+          style={clockArea}
+          onPress={this.firstPress}>
           <View
             style={clock}>
-            <Text style={(this.state.currentTurn) ? nextTurnText : currentTurnText}>{this.state.firstMin} : {this.state.firstSec} </Text>
+            <Text style={firsClock}>{this.state.firstMin} : {this.state.firstSec} </Text>
           </View>
 
         </TouchableOpacity >
@@ -108,27 +140,23 @@ export default class App extends Component {
           <Text
             style={controllerText}
             onPress={() => {
-              if (this.state.isStopped == 1) {
+              if (this.state.isPaused == 1) {
                 this.setState({
-                  isStopped: 0
+                  isPaused: 0
                 })
               } else {
                 this.setState({
-                  isStopped: 1
+                  isPaused: 1
                 })
               }
-            }}>{this.state.isStopped ? stoppedMessage : startedMessage}</Text>
+            }}>{this.state.isPaused ? stoppedMessage : startedMessage}</Text>
         </View>
 
         <TouchableOpacity
-          style={bgDeneme}
-          onPress={() => {
-            this.setState({
-              currentTurn: 0
-            })
-          }}>
+          style={clockArea}
+          onPress={this.secondPress}>
           <View style={clock}>
-            <Text style={(this.state.currentTurn) ? currentTurnText : nextTurnText}>{this.state.secondMin} : {this.state.secondSec}</Text>
+            <Text style={secondClock}>{this.state.secondMin} : {this.state.secondSec}</Text>
           </View>
 
         </TouchableOpacity >
@@ -169,7 +197,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
   },
-  bgDeneme: {
+  clockArea: {
     backgroundColor: '#323232',
     flex: 9,
     justifyContent: 'center',
