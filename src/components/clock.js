@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Alert, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
 export default class App extends Component {
 
@@ -20,7 +20,7 @@ export default class App extends Component {
       extraTime: 5,
       currentTurn: 0,
       isPaused: 0,
-      isStopped: 1
+      isStopped: 1,
     }
     this.firstTick = this.firstTick.bind(this);
     this.secondTick = this.secondTick.bind(this);
@@ -35,10 +35,13 @@ export default class App extends Component {
         isStopped: 0
       })
     }
-    if(!this.state.isPaused){
-      this.setState({
-        currentTurn: 1
-      })
+    if(this.state.currentTurn==0){
+      if(!this.state.isPaused){
+        this.setState({
+          currentTurn: 1,
+          firstSec:this.state.firstSec+5
+        })
+      }
     }
   }
   secondPress() {
@@ -47,10 +50,14 @@ export default class App extends Component {
         isStopped: 0
       })
     }
-    if(!this.state.isPaused){
-      this.setState({
-        currentTurn: 0
-      })
+    if(this.state.currentTurn==1){
+      
+      if(!this.state.isPaused){
+        this.setState({
+          currentTurn: 0,
+          secondSec:this.state.secondSec+5
+        })
+      }
     }
   }
   firstTick() {
@@ -182,12 +189,12 @@ const styles = StyleSheet.create({
     transform: [{ rotate: '90deg' }],
   },
   currentTurnText: {
-    color: '#a779ce',
+    color: 'white',
     fontSize: 70
   },
 
   nextTurnText: {
-    color: 'white',
+    color: '#a779ce',
     fontSize: 70,
   },
   controller: {
