@@ -6,13 +6,13 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstMin: 30,
-      firstSec: 44,
+      firstMin: 0,
+      firstSec: 4,
       firstSplit: 0,
       firstMove: 0,
 
-      secondMin: 30,
-      secondSec: 44,
+      secondMin: 0,
+      secondSec: 4,
       secondSplit: 0,
       secondMove: 0,
 
@@ -21,6 +21,7 @@ export default class App extends Component {
       currentTurn: 0,
       isPaused: 0,
       isStopped: 1,
+      isEnded: 0
     }
     this.firstTick = this.firstTick.bind(this);
     this.secondTick = this.secondTick.bind(this);
@@ -35,11 +36,11 @@ export default class App extends Component {
         isStopped: 0
       })
     }
-    if(this.state.currentTurn==0){
-      if(!this.state.isPaused){
+    if (this.state.currentTurn == 0) {
+      if (!this.state.isPaused&&!this.state.isEnded) {
         this.setState({
           currentTurn: 1,
-          firstSec:this.state.firstSec+5
+          firstSec: this.state.firstSec + 5
         })
       }
     }
@@ -50,12 +51,12 @@ export default class App extends Component {
         isStopped: 0
       })
     }
-    if(this.state.currentTurn==1){
-      
-      if(!this.state.isPaused){
+    if (this.state.currentTurn == 1) {
+
+      if (!this.state.isPaused&&!this.state.isEnded) {
         this.setState({
           currentTurn: 0,
-          secondSec:this.state.secondSec+5
+          secondSec: this.state.secondSec + 5
         })
       }
     }
@@ -65,18 +66,27 @@ export default class App extends Component {
     var firstMin = this.state.firstMin;
 
     if (this.state.isPaused == 0 && this.state.isStopped == 0) {
-      if (firstSec > 0) {
+      if (firstSec > 0 && firstMin >= 0) {
         firstSec--
       } else {
         firstSec = 59;
         firstMin--
       }
     }
-
-    this.setState({
-      firstMin,
-      firstSec
-    })
+    if(firstMin<0||firstSec<0){
+      this.setState({
+        firstMin:0,
+        firstSec:0,
+        isEnded:1,
+        isStopped:1,
+        isPaused:1
+      })
+    }else{
+      this.setState({
+        firstMin,
+        firstSec
+      })
+    }
   }
 
   secondTick() {
@@ -84,17 +94,28 @@ export default class App extends Component {
     var secondMin = this.state.secondMin;
 
     if (this.state.isPaused == 0 && this.state.isStopped == 0) {
-      if (secondSec > 0) {
+      if (secondSec > 0 && secondMin >= 0) {
         secondSec--
       } else {
-        secondSec = 59;
-        secondMin--
+          secondSec = 59;
+          secondMin--
       }
     }
-    this.setState({
-      secondMin,
-      secondSec
-    })
+    if(secondMin<0||secondSec<0){
+      this.setState({
+        secondMin:0,
+        secondSec:0,
+        isEnded:1,
+        isStopped:1,
+        isPaused:1
+      })
+    }else{
+      this.setState({
+        secondMin,
+        secondSec
+      })
+    }
+    
   }
 
 
@@ -128,10 +149,10 @@ export default class App extends Component {
     if (!this.state.isStopped) {
       if (this.state.currentTurn == 1) {
         secondClock = currentTurnText;
-        firsClock=nextTurnText;
-      }else{
-        firsClock=currentTurnText;
-        secondClock=nextTurnText
+        firsClock = nextTurnText;
+      } else {
+        firsClock = currentTurnText;
+        secondClock = nextTurnText
       }
 
     }
