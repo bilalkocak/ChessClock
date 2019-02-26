@@ -35,9 +35,11 @@ export default class App extends Component {
         isStopped: 0
       })
     }
-    this.setState({
-      currentTurn: 1
-    })
+    if(!this.state.isPaused){
+      this.setState({
+        currentTurn: 1
+      })
+    }
   }
   secondPress() {
     if (this.state.isStopped == 1) {
@@ -45,9 +47,11 @@ export default class App extends Component {
         isStopped: 0
       })
     }
-    this.setState({
-      currentTurn: 0
-    })
+    if(!this.state.isPaused){
+      this.setState({
+        currentTurn: 0
+      })
+    }
   }
   firstTick() {
     var firstSec = this.state.firstSec;
