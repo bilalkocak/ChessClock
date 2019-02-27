@@ -6,18 +6,18 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstMin: 0,
-      firstSec: 4,
+      firstMin: 10,
+      firstSec: 0,
       firstSplit: 0,
       firstMove: 0,
 
-      secondMin: 0,
-      secondSec: 4,
-      secondSplit: 0,
+      secondMin: 10,
+      secondSec: 0,
+      secondSpli: 0,
       secondMove: 0,
 
 
-      extraTime: 5,
+      extraSecond: 5,
       currentTurn: 0,
       isPaused: 0,
       isStopped: 1,
@@ -31,41 +31,80 @@ export default class App extends Component {
 
 
   firstPress() {
-    if (this.state.isStopped == 1) {
+    var {
+      firstSec,
+      firstMin,
+      extraSecond,
+      isStopped,
+      currentTurn,
+      isPaused,
+      isEnded
+    } = this.state;
+    if (isStopped == 1) {
       this.setState({
         isStopped: 0
       })
     }
-    if (this.state.currentTurn == 0) {
-      if (!this.state.isPaused&&!this.state.isEnded) {
+    if (currentTurn == 0) {
+
+      if (!isPaused && !isEnded) {
+        if (firstSec + extraSecond > 59) {
+          firstSec = (firstSec + extraSecond) % 59;
+          firstMin++
+        } else {
+          firstSec += extraSecond
+        }
         this.setState({
           currentTurn: 1,
-          firstSec: this.state.firstSec + 5
+          firstSec,
+          firstMin
         })
       }
     }
   }
+  
   secondPress() {
-    if (this.state.isStopped == 1) {
+    var {
+      secondSec,
+      secondMin,
+      extraSecond,
+      isStopped,
+      currentTurn,
+      isPaused,
+      isEnded
+    } = this.state;
+    if (isStopped == 1) {
       this.setState({
         isStopped: 0
       })
     }
-    if (this.state.currentTurn == 1) {
+    if (currentTurn == 1) {
 
-      if (!this.state.isPaused&&!this.state.isEnded) {
+      if (!isPaused && !isEnded) {
+        if (secondSec + extraSecond > 59) {
+          secondSec = (secondSec + extraSecond) % 59;
+          secondMin++
+        } else {
+          secondSec += extraSecond
+        }
         this.setState({
           currentTurn: 0,
-          secondSec: this.state.secondSec + 5
+          secondSec,
+          secondMin
         })
       }
     }
   }
-  firstTick() {
-    var firstSec = this.state.firstSec;
-    var firstMin = this.state.firstMin;
 
-    if (this.state.isPaused == 0 && this.state.isStopped == 0) {
+  firstTick() {
+    var {
+      firstSec,
+      firstMin,
+      isPaused,
+      isStopped
+    } = this.state;
+
+    if (isPaused == 0 && isStopped == 0) {
       if (firstSec > 0 && firstMin >= 0) {
         firstSec--
       } else {
@@ -73,15 +112,15 @@ export default class App extends Component {
         firstMin--
       }
     }
-    if(firstMin<0||firstSec<0){
+    if (firstMin < 0 || firstSec < 0) {
       this.setState({
-        firstMin:0,
-        firstSec:0,
-        isEnded:1,
-        isStopped:1,
-        isPaused:1
+        firstMin: 0,
+        firstSec: 0,
+        isEnded: 1,
+        isStopped: 1,
+        isPaused: 1
       })
-    }else{
+    } else {
       this.setState({
         firstMin,
         firstSec
@@ -90,32 +129,36 @@ export default class App extends Component {
   }
 
   secondTick() {
-    var secondSec = this.state.secondSec;
-    var secondMin = this.state.secondMin;
+    var {
+      secondSec,
+      secondMin,
+      isPaused,
+      isStopped
+    } = this.state;
 
-    if (this.state.isPaused == 0 && this.state.isStopped == 0) {
+    if (isPaused == 0 && isStopped == 0) {
       if (secondSec > 0 && secondMin >= 0) {
         secondSec--
       } else {
-          secondSec = 59;
-          secondMin--
+        secondSec = 59;
+        secondMin--
       }
     }
-    if(secondMin<0||secondSec<0){
+    if (secondMin < 0 || secondSec < 0) {
       this.setState({
-        secondMin:0,
-        secondSec:0,
-        isEnded:1,
-        isStopped:1,
-        isPaused:1
+        secondMin: 0,
+        secondSec: 0,
+        isEnded: 1,
+        isStopped: 1,
+        isPaused: 1
       })
-    }else{
+    } else {
       this.setState({
         secondMin,
         secondSec
       })
     }
-    
+
   }
 
 
@@ -142,12 +185,25 @@ export default class App extends Component {
       clockArea
     } = styles;
 
+    const {
+      currentTurn,
+      isStopped,
+      isPaused,
+      isEnded,
+      firstMin,
+      firstSec,
+      firstMove,
+      secondMin,
+      secondSec,
+      secondMove,
+    }=this.state;
+
     var stoppedMessage = "DEVAM ET";
     var startedMessage = "DURDUR";
     var firsClock = nextTurnText;
     var secondClock = nextTurnText;
-    if (!this.state.isStopped) {
-      if (this.state.currentTurn == 1) {
+    if (!isStopped) {
+      if (currentTurn == 1) {
         secondClock = currentTurnText;
         firsClock = nextTurnText;
       } else {
@@ -163,7 +219,7 @@ export default class App extends Component {
           onPress={this.firstPress}>
           <View
             style={clock}>
-            <Text style={firsClock}>{this.state.firstMin} : {this.state.firstSec} </Text>
+            <Text style={firsClock}>{firstMin} : {firstSec} </Text>
           </View>
 
         </TouchableOpacity >
@@ -172,7 +228,7 @@ export default class App extends Component {
           <Text
             style={controllerText}
             onPress={() => {
-              if (this.state.isPaused == 1) {
+              if (isPaused == 1) {
                 this.setState({
                   isPaused: 0
                 })
@@ -181,14 +237,14 @@ export default class App extends Component {
                   isPaused: 1
                 })
               }
-            }}>{this.state.isPaused ? stoppedMessage : startedMessage}</Text>
+            }}>{isPaused ? stoppedMessage : startedMessage}</Text>
         </View>
 
         <TouchableOpacity
           style={clockArea}
           onPress={this.secondPress}>
           <View style={clock}>
-            <Text style={secondClock}>{this.state.secondMin} : {this.state.secondSec}</Text>
+            <Text style={secondClock}>{secondMin} : {secondSec}</Text>
           </View>
 
         </TouchableOpacity >
