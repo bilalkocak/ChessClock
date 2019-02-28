@@ -42,12 +42,15 @@ export default class App extends Component {
     } = this.state;
     if (isStopped == 1) {
       this.setState({
-        isStopped: 0
+        isStopped: 0,
+        firstSec,
+        firstMin,
+        currentTurn: 1
       })
     }
     if (currentTurn == 0) {
 
-      if (!isPaused && !isEnded) {
+      if (!isPaused && !isEnded && !isStopped) {
         if (firstSec + extraSecond > 59) {
           firstSec = (firstSec + extraSecond) % 59;
           firstMin++
@@ -62,7 +65,7 @@ export default class App extends Component {
       }
     }
   }
-  
+
   secondPress() {
     var {
       secondSec,
@@ -75,12 +78,15 @@ export default class App extends Component {
     } = this.state;
     if (isStopped == 1) {
       this.setState({
-        isStopped: 0
+        isStopped: 0,
+        secondMin,
+        secondSec,
+        currentTurn: 0
       })
     }
     if (currentTurn == 1) {
 
-      if (!isPaused && !isEnded) {
+      if (!isPaused && !isEnded && !isStopped) {
         if (secondSec + extraSecond > 59) {
           secondSec = (secondSec + extraSecond) % 59;
           secondMin++
@@ -196,7 +202,7 @@ export default class App extends Component {
       secondMin,
       secondSec,
       secondMove,
-    }=this.state;
+    } = this.state;
 
     var stoppedMessage = "DEVAM ET";
     var startedMessage = "DURDUR";
