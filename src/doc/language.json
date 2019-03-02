@@ -1,0 +1,70 @@
+[
+    {
+        "lang": "TR",
+        "stopText": "Durdur",
+        "pauseText": "Duraklat",
+        "startText": "Devam Et",
+        "moveText": "Hamle",
+        "movesText": "Hamle",
+        "createText": "Oluştur",
+        "deleteText": "Sil",
+        "settingsScreen": {
+            "name":"Ayarlar",
+            "generalField": {
+                "name": "Genel",
+                "languageText": "Diller"
+            },
+            "soundField": {
+                "name": "Ses",
+                "soundText": "Ses",
+                "vibrationText": "Titreşim"
+            },
+            "aboutField": {
+                "name": "Hakkında",
+                "aboutText": "Hakkında",
+                "contactText": "İletişim",
+                "shareText": "Paylaş",
+                "voteText": "Puan ver"
+            },
+            "legalField": {
+                "name": "Yasal",
+                "privacyPolicyText": "Gizlilik Politikası",
+                "termsAndContiditionsText": "Şartlar ve Koşullar"
+            }
+        }
+    },
+    {
+        "lang": "EN",
+        "stopText": "Stop",
+        "pauseText": "Pause",
+        "startText": "Start",
+        "moveText": "Move",
+        "movesText": "Moves",
+        "createText": "Create",
+        "deleteText": "Delete",
+        "settingsScreen": {
+            "name":"Settings",
+            "generalField": {
+                "name": "General",
+                "languageText": "Languages"
+            },
+            "soundField": {
+                "name": "Sound",
+                "soundText": "Sound",
+                "vibrationText": "Vibration"
+            },
+            "aboutField": {
+                "name": "About",
+                "aboutText": "About",
+                "contactText": "Contact",
+                "shareText": "Share",
+                "voteText": "Vote"
+            },
+            "legalField": {
+                "name": "Legal",
+                "privacyPolicyText": "Privacy Policy",
+                "termsAndContiditionsText": "Terms & Conditions"
+            }
+        }
+    }
+]
