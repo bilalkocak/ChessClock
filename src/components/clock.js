@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 
-export default class App extends Component {
+class Clock extends Component {
 
   constructor(props) {
     super(props);
@@ -244,6 +245,13 @@ export default class App extends Component {
                 })
               }
             }}>{isPaused ? stoppedMessage : startedMessage}</Text>
+            <Text
+            onPress={
+              ()=>{
+                Actions.settings()
+              }
+            }
+            >Ayarlar</Text>
         </View>
 
         <TouchableOpacity
@@ -299,3 +307,6 @@ const styles = StyleSheet.create({
     width: '100%',
   }
 });
+
+
+export default Clock;
