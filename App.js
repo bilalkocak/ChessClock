@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import { StyleSheet, View} from 'react-native';
-import Clock from './src/components/clock';
+import Router from './src/router'
 export default class App extends Component {
   render() {
-    const {container,clock}=styles;
+    const {container}=styles;
     return (
       <View style={container}>
-        <Clock styles={clock}/>
+        <Router />
       </View>
     );
   }
@@ -15,11 +15,5 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  clock:{
-    flex:1,
-    height:100,
-    width:100,
-    backgroundColor:'black'
   }
 });
